@@ -14,16 +14,16 @@ cat > "$SCRIPT_PATH" <<EOF
 cleanCacheFiles() {
   EXTENSIONS='docx xlsx pdf'
   for FILE_TYPE in \$EXTENSIONS; do
-    find \$HOME/Library/Containers/com.microsoft.* -name "*.\${FILE_TYPE}" -exec ls -la {} \; >> $TMPDIR/cacheCleaned.log
+    find \$HOME/Library/Containers/com.microsoft.* -name "*.\${FILE_TYPE}" -exec ls -la {} \; >> $SCRIPT_DIR/cacheCleaned.log
     find \$HOME/Library/Containers/com.microsoft.* -name "*.\${FILE_TYPE}" -exec rm -f {} \;
   done
-  touch "\$TMPDIR/cacheCleaned.tmp"
+  touch "\$SCRIPT_DIR/cacheCleaned.tmp"
 }
 
-CACHE_FILE="\$TMPDIR/cacheCleaned.tmp"
+CACHE_FILE="\$SCRIPT_DIR/cacheCleaned.tmp"
 
 # Check if the cache file does not exist or was modified more than 12 hours ago
-if [ ! -e "\$CACHE_FILE" ] || [ "\$(find "\$TMPDIR" ! -newermt '-60 minutes' -type f -name "cacheCleaned.tmp" 2>/dev/null)" ]; then
+if [ ! -e "\$CACHE_FILE" ] || [ "\$(find "\$SCRIPT_DIR" ! -newermt '-60 minutes' -type f -name "cacheCleaned.tmp" 2>/dev/null)" ]; then
   cleanCacheFiles
 fi
 EOF
