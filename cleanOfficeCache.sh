@@ -11,16 +11,18 @@ mkdir -p "$SCRIPT_DIR"
 cat > "$SCRIPT_PATH" <<EOF
 #!/bin/bash
 
+SCRIPT_DIR="\$HOME/.local/scripts"
+CACHE_FILE="\$SCRIPT_DIR/cacheCleaned.tmp"
+
 cleanCacheFiles() {
   EXTENSIONS='docx xlsx pdf'
   for FILE_TYPE in \$EXTENSIONS; do
-    find \$HOME/Library/Containers/com.microsoft.* -name "*.\${FILE_TYPE}" -exec ls -la {} \; >> $SCRIPT_DIR/cacheCleaned.log
+    find \$HOME/Library/Containers/com.microsoft.* -name "*.\${FILE_TYPE}" -exec ls -la {} \; >> \$SCRIPT_DIR/cacheCleaned.log
     find \$HOME/Library/Containers/com.microsoft.* -name "*.\${FILE_TYPE}" -exec rm -f {} \;
   done
-  touch "\$SCRIPT_DIR/cacheCleaned.tmp"
+  touch "\$CACHE_FILE"
 }
 
-CACHE_FILE="\$SCRIPT_DIR/cacheCleaned.tmp"
 
 # Check if the cache file does not exist or was modified more than 12 hours ago
 if [ ! -e "\$CACHE_FILE" ] || [ "\$(find "\$SCRIPT_DIR" ! -newermt '-60 minutes' -type f -name "cacheCleaned.tmp" 2>/dev/null)" ]; then
