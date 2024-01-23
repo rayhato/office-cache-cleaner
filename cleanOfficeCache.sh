@@ -31,6 +31,7 @@ fi
 EOF
 
 # Step 3: Add a crontab job for the current user
+chmod u+x $SCRIPT_PATH
 (crontab -l; echo "$CRON_JOB") | crontab -
 
 echo "Deployment completed successfully. The script cleanOfficeCache.sh will run every 15 minutes."
