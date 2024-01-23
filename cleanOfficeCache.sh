@@ -30,8 +30,11 @@ if [ ! -e "\$CACHE_FILE" ] || [ "\$(find "\$SCRIPT_DIR" ! -newermt '-60 minutes'
 fi
 EOF
 
-# Step 3: Add a crontab job for the current user
 chmod u+x $SCRIPT_PATH
+
+# Step 3: Add a crontab job for the current user
+# remove existing cron record if it present
+crontab -l | grep -v cleanOfficeCache.sh | crontab -
 (crontab -l; echo "$CRON_JOB") | crontab -
 
 echo "Deployment completed successfully. The script cleanOfficeCache.sh will run every 15 minutes."
